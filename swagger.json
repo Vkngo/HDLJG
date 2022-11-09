@@ -1,0 +1,4936 @@
+{
+  "openapi": "3.0.4",
+  "servers": [
+    {
+      "url": "https://api.centrobill.com",
+      "description": "LIVE endpoint"
+    },
+    {
+      "url": "https://stage.api.centrobill.com",
+      "description": "STAGE endpoint"
+    }
+  ],
+  "info": {
+    "description": "Centrobill API\n\n The HTTP headers are used to pass additional information between the clients and the server through the request and response header.\nCertain request customization requires setting HTTP headers.\n`Content-Type` and `Accept` headers control input and output format.\n\n# Authentication\n\n<!-- ReDoc-Inject: <security-definitions> -->",
+    "version": "1.1.37",
+    "title": "Centrobill Payment API"
+  },
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
+  "x-tagGroups": [
+    {
+      "name": "Server-to-server",
+      "tags": [
+        "Payment",
+        "Payout",
+        "Subscription",
+        "Site",
+        "Product",
+        "Consumer",
+        "Service",
+        "Verification",
+        "Currency exchange rates"
+      ]
+    },
+    {
+      "name": "Hosted payment page",
+      "tags": [
+        "Payment page"
+      ]
+    }
+  ],
+  "paths": {
+    "/tokenize": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Generate card data token",
+        "operationId": "generateCardDataToken",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          }
+        ],
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/tokenize"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenize-2"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Pay",
+        "operationId": "pay",
+        "description": "",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/payment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/payment-2"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        },
+        "callbacks": {
+          "paymentEvent": {
+            "{$request.body.url.ipnUrl}": {
+              "summary": "Payment status callback",
+              "post": {
+                "summary": "Payment status callback",
+                "operationId": "paymentStatusCallback",
+                "requestBody": {
+                  "$ref": "#/components/requestBodies/payment-callback"
+                },
+                "responses": {
+                  "200": {
+                    "description": "Your server implementation should return this HTTP status code\nif the data was received successfully\n"
+                  },
+                  "201": {
+                    "description": "Your server implementation should return this HTTP status code\nif the data was received successfully\n"
+                  },
+                  "202": {
+                    "description": "Your server implementation should return this HTTP status code\nif the data was received successfully\n"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/paymentPage": {
+      "post": {
+        "tags": [
+          "Payment page"
+        ],
+        "summary": "Create URL to payment page",
+        "operationId": "generateUrlToPaymentPage",
+        "description": "",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/payment-page"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/payment-page-2"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        },
+        "callbacks": {
+          "paymentEvent": {
+            "{$request.body.url.ipnUrl}": {
+              "summary": "Payment status callback",
+              "post": {
+                "summary": "Payment status callback",
+                "operationId": "paymentStatusCallback",
+                "requestBody": {
+                  "$ref": "#/components/requestBodies/payment-callback"
+                },
+                "responses": {
+                  "200": {
+                    "description": "Your server implementation should return this HTTP status code\nif the data was received successfully\n"
+                  },
+                  "201": {
+                    "description": "Your server implementation should return this HTTP status code\nif the data was received successfully\n"
+                  },
+                  "202": {
+                    "description": "Your server implementation should return this HTTP status code\nif the data was received successfully\n"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment/{id}/credit": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Credit",
+        "operationId": "credit",
+        "description": "",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/credit-id"
+          },
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/credit"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/credit-2"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payout": {
+      "post": {
+        "tags": [
+          "Payout"
+        ],
+        "summary": "Payout",
+        "operationId": "payout",
+        "description": "",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/payout"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/payout-2"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subscription/{id}": {
+      "get": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Get subscription",
+        "operationId": "getSubscription",
+        "description": "",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          },
+          {
+            "$ref": "#/components/parameters/subscription-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/subscription-2"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-not-found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Change subscription recurrent plan",
+        "operationId": "changeSubscription",
+        "description": "",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          },
+          {
+            "$ref": "#/components/parameters/subscription-id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/subscription-3"
+              },
+              "required": [
+                "price"
+              ]
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/subscription-2"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-not-found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subscription/{id}/cancel": {
+      "put": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Cancel subscription",
+        "operationId": "cancelSubscription",
+        "description": "",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/subscription-id"
+          },
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/subscription-cancel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/subscription-2"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-not-found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subscription/{id}/recover": {
+      "put": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Recover already canceled subscription",
+        "operationId": "recoverSubscription",
+        "description": "",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/subscription-id"
+          },
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/subscription-2"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-not-found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/site": {
+      "post": {
+        "tags": [
+          "Site"
+        ],
+        "summary": "Create site",
+        "operationId": "createSite",
+        "description": "",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/site",
+                "required": [
+                  "name",
+                  "ipnUrl"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/site-2"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/site/{id}": {
+      "get": {
+        "tags": [
+          "Site"
+        ],
+        "summary": "Get site",
+        "operationId": "getSite",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/site-2"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Site"
+        ],
+        "summary": "Update site",
+        "operationId": "updateSite",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/site"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/site-2"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sku": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Create product (SKU)",
+        "operationId": "createProduct",
+        "description": "",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/sku",
+                "required": [
+                  "title",
+                  "siteId",
+                  "type",
+                  "price"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "title": "Object to represent SKU",
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "./entities/sku/name.yml"
+                  },
+                  "siteId": {
+                    "$ref": "./entities/site/id.yml"
+                  },
+                  "externalId": {
+                    "$ref": "./entities/site/external-id.yml"
+                  },
+                  "title": {
+                    "$ref": "./entities/sku/title.yml"
+                  },
+                  "type": {
+                    "$ref": "./entities/sku/type.yml"
+                  },
+                  "price": {
+                    "title": "Price",
+                    "oneOf": [
+                      {
+                        "$ref": "../schemas/entities/amount.yml",
+                        "title": "Amount of product"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "$ref": "../schemas/entities/price.yml"
+                        }
+                      }
+                    ]
+                  },
+                  "currency": {
+                    "$ref": "../schemas/entities/currency.yml"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "title": "Date of product create",
+                    "example": "2020-04-17 13:43:02"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "title": "Date of product last update",
+                    "example": "2020-11-17 13:43:02"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sku/{name}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Get product (SKU)",
+        "operationId": "getProduct",
+        "description": "",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/name"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "title": "Object to represent SKU",
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "./entities/sku/name.yml"
+                  },
+                  "siteId": {
+                    "$ref": "./entities/site/id.yml"
+                  },
+                  "externalId": {
+                    "$ref": "./entities/site/external-id.yml"
+                  },
+                  "title": {
+                    "$ref": "./entities/sku/title.yml"
+                  },
+                  "type": {
+                    "$ref": "./entities/sku/type.yml"
+                  },
+                  "price": {
+                    "title": "Price",
+                    "oneOf": [
+                      {
+                        "$ref": "../schemas/entities/amount.yml",
+                        "title": "Amount of product"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "$ref": "../schemas/entities/price.yml"
+                        }
+                      }
+                    ]
+                  },
+                  "currency": {
+                    "$ref": "../schemas/entities/currency.yml"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "title": "Date of product create",
+                    "example": "2020-04-17 13:43:02"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "title": "Date of product last update",
+                    "example": "2020-11-17 13:43:02"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Update product (SKU)",
+        "operationId": "updateProduct",
+        "description": "",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/name"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/sku"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "title": "Object to represent SKU",
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "./entities/sku/name.yml"
+                  },
+                  "siteId": {
+                    "$ref": "./entities/site/id.yml"
+                  },
+                  "externalId": {
+                    "$ref": "./entities/site/external-id.yml"
+                  },
+                  "title": {
+                    "$ref": "./entities/sku/title.yml"
+                  },
+                  "type": {
+                    "$ref": "./entities/sku/type.yml"
+                  },
+                  "price": {
+                    "title": "Price",
+                    "oneOf": [
+                      {
+                        "$ref": "../schemas/entities/amount.yml",
+                        "title": "Amount of product"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "$ref": "../schemas/entities/price.yml"
+                        }
+                      }
+                    ]
+                  },
+                  "currency": {
+                    "$ref": "../schemas/entities/currency.yml"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "title": "Date of product create",
+                    "example": "2020-04-17 13:43:02"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "title": "Date of product last update",
+                    "example": "2020-11-17 13:43:02"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/consumer": {
+      "post": {
+        "tags": [
+          "Consumer"
+        ],
+        "summary": "Create consumer (user)",
+        "operationId": "createConsumer",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/consumer-3"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/consumer-4"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/consumer/{id}": {
+      "get": {
+        "tags": [
+          "Consumer"
+        ],
+        "summary": "Get consumer (user)",
+        "operationId": "getConsumer",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/id-2"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/consumer-4"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Consumer"
+        ],
+        "summary": "Change group of consumer (user)",
+        "operationId": "changeConsumerGroup",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/id-2"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "groupId": {
+                    "$ref": "#/components/schemas/group-id"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/consumer-4"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ips": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Get the list of IP addresses that requests may come from",
+        "operationId": "getListOfExternalIps",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ips"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/testPaymentData/{id}": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Get test payment data by ID",
+        "security": [],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/test-payment-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/test-payment-data"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-not-found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/testPaymentData?": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Get list of the test payment data",
+        "security": [],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Per page limit"
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Type of the test payment data"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/test-payment-data-array"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/testPaymentData/{id}/balance": {
+      "put": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Update balance of the test payment data",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/update-balance-test-payment-data"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/test-payment-data"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/testPaymentData": {
+      "post": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Create test payment details",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create-test-data"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/test-payment-data"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Delete test payment data",
+        "security": [],
+        "responses": {
+          "201": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/testPaymentData/{id}/block": {
+      "post": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Block test payment data",
+        "security": [],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/test-payment-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/test-payment-data"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-not-found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/testPaymentData/{id}/unblock": {
+      "post": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Unblock test payment data",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/test-payment-data"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/testPaymentData/{id}/emulate3ds": {
+      "post": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Emulate 3Ds for the test payment data",
+        "security": [],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/test-payment-id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/emulate-3Ds-test-payment-data"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-not-found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/testPaymentData/{id}/notEmulate3ds": {
+      "post": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Not emulate 3Ds for the test payment data",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/emulate-3Ds-test-payment-data"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/antifraud/verification/{phone}": {
+      "get": {
+        "tags": [
+          "Verification"
+        ],
+        "summary": "Get available channels of code verification",
+        "operationId": "getAvailableChannelsOfCodeVerification",
+        "parameters": [
+          {
+            "name": "phone",
+            "in": "path",
+            "schema": {
+              "$ref": "#/components/schemas/phone"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/verification-channels"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/antifraud/verification/{channel}/send": {
+      "post": {
+        "tags": [
+          "Verification"
+        ],
+        "summary": "Send message with verification code",
+        "operationId": "sendMessageWithVerificationCode",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/verification-channel"
+          },
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "phone"
+                ],
+                "properties": {
+                  "phone": {
+                    "$ref": "#/components/schemas/phone"
+                  },
+                  "from": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 16,
+                    "example": "Centrobill"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/antifraud/verification/{phone}/{code}": {
+      "get": {
+        "tags": [
+          "Verification"
+        ],
+        "summary": "Check verification code",
+        "operationId": "checkVerificationCode",
+        "parameters": [
+          {
+            "name": "phone",
+            "in": "path",
+            "schema": {
+              "$ref": "#/components/schemas/phone"
+            },
+            "required": true
+          },
+          {
+            "$ref": "#/components/parameters/verification-code"
+          },
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Code is valid"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/currency-exchange-rate": {
+      "get": {
+        "tags": [
+          "Currency exchange rates"
+        ],
+        "summary": "Get list of currency exchange rates",
+        "operationId": "getCurrencyExchangeRates",
+        "description": "",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/currency-rate"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/currency-exchange-rate/{iso3}": {
+      "get": {
+        "tags": [
+          "Currency exchange rates"
+        ],
+        "summary": "Get exchange rate by iso3",
+        "operationId": "getExchangeRateByIso3",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/currency"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/x-request-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/currency-rate"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-bad-request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-forbidden"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error-server-internal"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    },
+    "parameters": {
+      "x-request-id": {
+        "name": "X-Request-ID",
+        "in": "header",
+        "description": "Unique ID of request",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "credit-id": {
+        "name": "id",
+        "in": "path",
+        "description": "Transaction that should be credited",
+        "schema": {
+          "type": "string"
+        },
+        "required": true
+      },
+      "subscription-id": {
+        "in": "path",
+        "name": "id",
+        "schema": {
+          "$ref": "#/components/schemas/id-4"
+        },
+        "required": true,
+        "description": "Subscription ID"
+      },
+      "test-payment-id": {
+        "in": "path",
+        "name": "id",
+        "required": true,
+        "description": "Test payment data ID"
+      },
+      "verification-channel": {
+        "name": "channel",
+        "in": "path",
+        "schema": {
+          "type": "string"
+        },
+        "description": "Channel of message",
+        "required": true
+      },
+      "verification-code": {
+        "name": "code",
+        "in": "path",
+        "schema": {
+          "type": "string"
+        },
+        "description": "Verification code",
+        "required": true
+      }
+    },
+    "schemas": {
+      "number": {
+        "title": "Card number",
+        "type": "string",
+        "minLength": 12,
+        "maxLength": 19
+      },
+      "expiration-year": {
+        "title": "Card expiration year",
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 2
+      },
+      "expiration-month": {
+        "title": "Card expiration month",
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 2
+      },
+      "cvv": {
+        "title": "Card secure code",
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 4
+      },
+      "holder": {
+        "title": "Cardholder full name",
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64,
+        "example": "John Smith"
+      },
+      "zip-code": {
+        "title": "Zip code",
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 16,
+        "example": "36101"
+      },
+      "tokenize": {
+        "title": "Payload of tokenize",
+        "properties": {
+          "number": {
+            "$ref": "#/components/schemas/number"
+          },
+          "expirationYear": {
+            "$ref": "#/components/schemas/expiration-year"
+          },
+          "expirationMonth": {
+            "$ref": "#/components/schemas/expiration-month"
+          },
+          "cvv": {
+            "$ref": "#/components/schemas/cvv"
+          },
+          "cardHolder": {
+            "$ref": "#/components/schemas/holder"
+          },
+          "zip": {
+            "$ref": "#/components/schemas/zip-code"
+          }
+        },
+        "required": [
+          "number",
+          "expirationYear",
+          "expirationMonth"
+        ],
+        "example": {
+          "number": "4024007179366348",
+          "expirationYear": "25",
+          "expirationMonth": "12",
+          "cvv": "009",
+          "cardHolder": "John Smith",
+          "zip": "14000"
+        }
+      },
+      "tokenize-2": {
+        "title": "Object to represent tokenize result",
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Unique token for payment details",
+            "example": "d86bdcbb-c369-46d9-a9d0-9c5010e3bfdb"
+          },
+          "expireAt": {
+            "type": "integer",
+            "title": "Unixtimestamp when token expire",
+            "example": 1611735028
+          }
+        }
+      },
+      "error-bad-request": {
+        "title": "Object to represent error",
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message of error",
+            "default": "Bad Request"
+          },
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            },
+            "example": {
+              "parameterName": "Parameter is invalid or missing"
+            }
+          }
+        }
+      },
+      "error-unauthorized": {
+        "title": "Object to represent error",
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message of error",
+            "default": "Unauthorized`"
+          }
+        }
+      },
+      "error-forbidden": {
+        "title": "Object to represent error",
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message of error",
+            "default": "Forbidden"
+          }
+        }
+      },
+      "error-server-internal": {
+        "title": "Object to represent error",
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message of error",
+            "default": "Internal server error"
+          }
+        }
+      },
+      "emulate-code": {
+        "title": "Emulate transaction's decline code. For example, 5003 will throw \"Invalid merchant\" decline. See full declines list below in responses under payment object.",
+        "type": "string",
+        "minLength": 4,
+        "maxLength": 6,
+        "example": "5003"
+      },
+      "card": {
+        "title": "Credit card",
+        "type": "object",
+        "required": [
+          "type",
+          "number",
+          "expirationYear",
+          "expirationMonth",
+          "cvv"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "card"
+            ]
+          },
+          "number": {
+            "$ref": "#/components/schemas/number"
+          },
+          "expirationYear": {
+            "$ref": "#/components/schemas/expiration-year"
+          },
+          "expirationMonth": {
+            "$ref": "#/components/schemas/expiration-month"
+          },
+          "cvv": {
+            "type": "string",
+            "$ref": "#/components/schemas/cvv"
+          },
+          "3ds": {
+            "type": "boolean",
+            "title": "Payment should be processed with 3D Secure. True by default"
+          },
+          "emulateCode": {
+            "$ref": "#/components/schemas/emulate-code"
+          }
+        }
+      },
+      "bic": {
+        "title": "Business Identifier Code ISO-9362",
+        "type": "string",
+        "minLength": 8,
+        "maxLength": 11
+      },
+      "sepa": {
+        "title": "Sepa",
+        "type": "object",
+        "required": [
+          "type",
+          "iban"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "sepa"
+            ]
+          },
+          "iban": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 34,
+            "title": "International bank account number ISO-13616"
+          },
+          "bic": {
+            "$ref": "#/components/schemas/bic"
+          },
+          "emulateCode": {
+            "$ref": "#/components/schemas/emulate-code"
+          }
+        }
+      },
+      "sofortbanking": {
+        "title": "Soforbanking",
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "sofortbanking"
+            ]
+          },
+          "bic": {
+            "$ref": "#/components/schemas/bic"
+          },
+          "emulateCode": {
+            "$ref": "#/components/schemas/emulate-code"
+          }
+        }
+      },
+      "onlinebanking": {
+        "title": "Onlinebanking",
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "onlinebanking"
+            ]
+          },
+          "bic": {
+            "$ref": "#/components/schemas/bic"
+          },
+          "emulateCode": {
+            "$ref": "#/components/schemas/emulate-code"
+          }
+        }
+      },
+      "paysafecard": {
+        "title": "Paysafecard",
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "paysafecard"
+            ]
+          },
+          "emulateCode": {
+            "$ref": "#/components/schemas/emulate-code"
+          }
+        }
+      },
+      "giropay": {
+        "title": "Giropay",
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "giropay"
+            ]
+          },
+          "bic": {
+            "$ref": "#/components/schemas/bic"
+          },
+          "emulateCode": {
+            "$ref": "#/components/schemas/emulate-code"
+          }
+        }
+      },
+      "ideal": {
+        "title": "Ideal",
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "ideal"
+            ]
+          },
+          "bic": {
+            "$ref": "#/components/schemas/bic"
+          },
+          "emulateCode": {
+            "$ref": "#/components/schemas/emulate-code"
+          }
+        }
+      },
+      "pps": {
+        "title": "PPS",
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "pps"
+            ]
+          },
+          "emulateCode": {
+            "$ref": "#/components/schemas/emulate-code"
+          }
+        }
+      },
+      "gash": {
+        "title": "Gash",
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "gash"
+            ]
+          },
+          "emulateCode": {
+            "$ref": "#/components/schemas/emulate-code"
+          }
+        }
+      },
+      "przelewy24": {
+        "title": "Przelewy24",
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "przelewy24"
+            ]
+          },
+          "bic": {
+            "$ref": "#/components/schemas/bic"
+          },
+          "emulateCode": {
+            "$ref": "#/components/schemas/emulate-code"
+          }
+        }
+      },
+      "bancontact": {
+        "title": "Bancontact",
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "bancontact"
+            ]
+          },
+          "bic": {
+            "$ref": "#/components/schemas/bic"
+          },
+          "emulateCode": {
+            "$ref": "#/components/schemas/emulate-code"
+          }
+        }
+      },
+      "eps": {
+        "title": "Eps",
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "eps"
+            ]
+          },
+          "bic": {
+            "$ref": "#/components/schemas/bic"
+          },
+          "emulateCode": {
+            "$ref": "#/components/schemas/emulate-code"
+          }
+        }
+      },
+      "mybank": {
+        "title": "Mybank",
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "mybank"
+            ]
+          },
+          "bic": {
+            "$ref": "#/components/schemas/bic"
+          },
+          "emulateCode": {
+            "$ref": "#/components/schemas/emulate-code"
+          }
+        }
+      },
+      "consumer": {
+        "title": "Consumer saved payment data",
+        "type": "object",
+        "required": [
+          "type",
+          "value"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "consumer"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 36
+          },
+          "emulateCode": {
+            "$ref": "#/components/schemas/emulate-code"
+          }
+        }
+      },
+      "payment-account-id-with-cvv": {
+        "title": "Concrete payment account of customer with CVV number",
+        "type": "object",
+        "required": [
+          "type",
+          "paymentAccountId",
+          "cvv"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "paymentAccountIdWithCvv"
+            ]
+          },
+          "paymentAccountId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "d86bdcbb-c369-46d9-a9d0-9c5010e3bfdb"
+          },
+          "cvv": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 4,
+            "title": "Card secure code"
+          },
+          "emulateCode": {
+            "$ref": "#/components/schemas/emulate-code"
+          }
+        }
+      },
+      "payment-account-id": {
+        "title": "Concrete payment account of customer",
+        "paymentAccountId": null,
+        "type": "object",
+        "required": [
+          "type",
+          "paymentAccountId"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "paymentAccountId"
+            ]
+          },
+          "paymentAccountId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "d86bdcbb-c369-46d9-a9d0-9c5010e3bfdb"
+          },
+          "emulateCode": {
+            "$ref": "#/components/schemas/emulate-code"
+          }
+        }
+      },
+      "token": {
+        "title": "Token of tokenized card data",
+        "type": "object",
+        "required": [
+          "type",
+          "value"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "token"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 36
+          },
+          "3ds": {
+            "type": "boolean",
+            "title": "Payment should be processed with 3D Secure. True by default"
+          },
+          "emulateCode": {
+            "$ref": "#/components/schemas/emulate-code"
+          }
+        }
+      },
+      "crypto": {
+        "title": "Crypto",
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "crypto"
+            ]
+          },
+          "emulateCode": {
+            "$ref": "#/components/schemas/emulate-code"
+          }
+        }
+      },
+      "title": {
+        "title": "Product name",
+        "type": "string",
+        "maxLength": 64
+      },
+      "id": {
+        "title": "Centrobill's site id",
+        "type": "string",
+        "minLength": 5,
+        "maxLength": 36,
+        "example": "983759353"
+      },
+      "domain-name": {
+        "title": "Domain name (without protocol)",
+        "type": "string",
+        "minLength": 5,
+        "maxLength": 36,
+        "example": "google.com",
+        "description": "In case if property is passed site domain name will be replaced"
+      },
+      "offset": {
+        "title": "Date offset in days",
+        "type": "string",
+        "maxLength": 5,
+        "example": "5d"
+      },
+      "amount": {
+        "title": "Amount of operation",
+        "type": "number",
+        "format": "double",
+        "example": 9.99
+      },
+      "currency": {
+        "title": "Currency (ISO 4217)",
+        "type": "string",
+        "format": "iso3",
+        "example": "USD"
+      },
+      "price": {
+        "title": "Price",
+        "type": "object",
+        "properties": {
+          "offset": {
+            "$ref": "#/components/schemas/offset"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/amount"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/currency"
+          },
+          "repeat": {
+            "oneOf": [
+              {
+                "type": "boolean",
+                "title": "Boolean flag of repeat",
+                "description": "false - not repeat, true - repeat ever"
+              },
+              {
+                "title": "Numeric count of repeat",
+                "type": "integer",
+                "description": "Count of repeats"
+              }
+            ]
+          }
+        }
+      },
+      "name": {
+        "title": "Centrobill SKU",
+        "type": "string",
+        "minLength": 5,
+        "maxLength": 36,
+        "example": "TEST_EN"
+      },
+      "id-2": {
+        "title": "Consumer ID",
+        "type": "string",
+        "minLength": 5,
+        "maxLength": 36
+      },
+      "external-id": {
+        "title": "Merchant consumer id",
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 36,
+        "example": "14253ms92m0as"
+      },
+      "email": {
+        "title": "Consumer email",
+        "type": "string",
+        "format": "email",
+        "example": "jonny.sonny@google.com"
+      },
+      "first-name": {
+        "title": "Consumer first name",
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 32
+      },
+      "last-name": {
+        "title": "Consumer last name",
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 32
+      },
+      "phone": {
+        "title": "Consumer's phone number",
+        "type": "string",
+        "minLength": 7,
+        "maxLength": 16,
+        "example": "+1987353539"
+      },
+      "country": {
+        "title": "Consumer's country",
+        "type": "string",
+        "format": "iso3"
+      },
+      "state": {
+        "title": "Consumer's state",
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 32
+      },
+      "city": {
+        "title": "Consumer city",
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 50
+      },
+      "address": {
+        "title": "Customer's address",
+        "type": "string",
+        "description": "Address",
+        "maxLength": 64
+      },
+      "ip-address": {
+        "title": "IP address",
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 16
+      },
+      "browser-user-agent": {
+        "title": "Browser user-agent",
+        "type": "string",
+        "description": "Consumer's consumer agent",
+        "maxLength": 255
+      },
+      "device-id": {
+        "title": "Exodentity Device ID",
+        "type": "string",
+        "description": "Exodentity device ID",
+        "maxLength": 1024
+      },
+      "browser-accept-header": {
+        "title": "Browser accept header",
+        "type": "string",
+        "description": "Exact content of the HTTP accept headers as sent to the 3DS Requestor from the Cardholder's browser."
+      },
+      "browser-java-enabled": {
+        "title": "Browser java enabled",
+        "type": "boolean",
+        "description": "Boolean that represents the ability of the cardholder browser to execute Java. Value is returned from the navigator.javaEnabled property."
+      },
+      "browser-language": {
+        "title": "Browser language",
+        "type": "string",
+        "maxLength": 8,
+        "description": "Value representing the browser language as defined in IETF BCP47. The value is limited to 1-8 characters. Value is returned from navigator.language property."
+      },
+      "browser-color-depth": {
+        "title": "Browser color depth",
+        "type": "integer",
+        "description": "Value representing the bit depth of the colour palette for displaying images, in bits per pixel. Obtained from Cardholder browser using the screen.colorDepth property."
+      },
+      "browser-screen-height": {
+        "title": "Browser screen height",
+        "type": "integer",
+        "description": "Total height of the Cardholder's screen in pixels. Value is returned from the screen.height property."
+      },
+      "browser-screen-width": {
+        "title": "Browser screen width",
+        "type": "integer",
+        "description": "Total width of the Cardholder's screen in pixels. Value is returned from the screen.width property"
+      },
+      "browser-timezone": {
+        "title": "Browser timezone",
+        "type": "string",
+        "description": "Time difference between UTC time and the Cardholder browser local time, in minutes. The field is limited to 1-5 characters where the value is returned from the getTimezoneOffset() method."
+      },
+      "ipn": {
+        "title": "URL",
+        "type": "string",
+        "format": "url",
+        "example": "https://google.com/centrobill/webhook/245252525252525",
+        "description": "Callback Notification will be sent to this URL after purchase"
+      },
+      "redirect": {
+        "title": "URL",
+        "type": "string",
+        "format": "url",
+        "example": "https://google.com/oijhflsfs9",
+        "description": "User will be redirect to this URL after purchase"
+      },
+      "metadata": {
+        "title": "Metadata",
+        "type": "object",
+        "description": "Used for storing additional structured information associated with payment",
+        "example": {
+          "foo": "bar"
+        }
+      },
+      "emailOptions": {
+        "title": "Email Options",
+        "type": "object",
+        "example": {
+          "send": true
+        }
+      },
+      "payment": {
+        "title": "Payload to create payment",
+        "type": "object",
+        "properties": {
+          "paymentSource": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/card"
+              },
+              {
+                "$ref": "#/components/schemas/sepa"
+              },
+              {
+                "$ref": "#/components/schemas/sofortbanking"
+              },
+              {
+                "$ref": "#/components/schemas/onlinebanking"
+              },
+              {
+                "$ref": "#/components/schemas/paysafecard"
+              },
+              {
+                "$ref": "#/components/schemas/giropay"
+              },
+              {
+                "$ref": "#/components/schemas/ideal"
+              },
+              {
+                "$ref": "#/components/schemas/pps"
+              },
+              {
+                "$ref": "#/components/schemas/gash"
+              },
+              {
+                "$ref": "#/components/schemas/przelewy24"
+              },
+              {
+                "$ref": "#/components/schemas/bancontact"
+              },
+              {
+                "$ref": "#/components/schemas/eps"
+              },
+              {
+                "$ref": "#/components/schemas/mybank"
+              },
+              {
+                "$ref": "#/components/schemas/consumer"
+              },
+              {
+                "$ref": "#/components/schemas/payment-account-id-with-cvv"
+              },
+              {
+                "$ref": "#/components/schemas/payment-account-id"
+              },
+              {
+                "$ref": "#/components/schemas/token"
+              },
+              {
+                "$ref": "#/components/schemas/crypto"
+              }
+            ]
+          },
+          "sku": {
+            "type": "object",
+            "oneOf": [
+              {
+                "title": "SKU object with site id",
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "$ref": "#/components/schemas/title"
+                  },
+                  "siteId": {
+                    "$ref": "#/components/schemas/id"
+                  },
+                  "domainName": {
+                    "$ref": "#/components/schemas/domain-name"
+                  },
+                  "price": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/price"
+                    }
+                  }
+                },
+                "required": [
+                  "siteId",
+                  "price"
+                ]
+              },
+              {
+                "title": "SKU object with SKU name",
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "$ref": "#/components/schemas/title"
+                  },
+                  "name": {
+                    "$ref": "#/components/schemas/name"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              {
+                "title": "SKU object with SKU name and custom prices",
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "$ref": "#/components/schemas/title"
+                  },
+                  "name": {
+                    "$ref": "#/components/schemas/name"
+                  },
+                  "price": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/price"
+                    }
+                  }
+                },
+                "required": [
+                  "name",
+                  "price"
+                ]
+              }
+            ]
+          },
+          "consumer": {
+            "type": "object",
+            "required": [
+              "ip"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/id-2",
+                "description": "Required in case if consumer.externalId or consumer.email are empty"
+              },
+              "externalId": {
+                "$ref": "#/components/schemas/external-id",
+                "description": "Required in case if consumer.id is empty"
+              },
+              "email": {
+                "$ref": "#/components/schemas/email",
+                "description": "Required in case if consumer.id is empty"
+              },
+              "firstName": {
+                "$ref": "#/components/schemas/first-name",
+                "description": "Required in case if paymentSource.type is not one of consumer, paymentAccountIdWithCvv, token"
+              },
+              "lastName": {
+                "$ref": "#/components/schemas/last-name",
+                "description": "Required in case if paymentSource.type is not one of consumer, paymentAccountIdWithCvv, token"
+              },
+              "phone": {
+                "$ref": "#/components/schemas/phone"
+              },
+              "country": {
+                "$ref": "#/components/schemas/country"
+              },
+              "state": {
+                "$ref": "#/components/schemas/state"
+              },
+              "city": {
+                "$ref": "#/components/schemas/city"
+              },
+              "address": {
+                "$ref": "#/components/schemas/address"
+              },
+              "zip": {
+                "$ref": "#/components/schemas/zip-code"
+              },
+              "ip": {
+                "$ref": "#/components/schemas/ip-address"
+              },
+              "userAgent": {
+                "$ref": "#/components/schemas/browser-user-agent"
+              },
+              "deviceId": {
+                "$ref": "#/components/schemas/device-id"
+              },
+              "browserAcceptHeader": {
+                "$ref": "#/components/schemas/browser-accept-header"
+              },
+              "browserJavaEnabled": {
+                "$ref": "#/components/schemas/browser-java-enabled"
+              },
+              "browserLanguage": {
+                "$ref": "#/components/schemas/browser-language"
+              },
+              "browserColorDepth": {
+                "$ref": "#/components/schemas/browser-color-depth"
+              },
+              "browserScreenHeight": {
+                "$ref": "#/components/schemas/browser-screen-height"
+              },
+              "browserScreenWidth": {
+                "$ref": "#/components/schemas/browser-screen-width"
+              },
+              "browserTimezone": {
+                "$ref": "#/components/schemas/browser-timezone"
+              }
+            }
+          },
+          "url": {
+            "type": "object",
+            "properties": {
+              "ipnUrl": {
+                "$ref": "#/components/schemas/ipn"
+              },
+              "redirectUrl": {
+                "$ref": "#/components/schemas/redirect"
+              }
+            }
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/metadata"
+          },
+          "emailOptions": {
+            "$ref": "#/components/schemas/emailOptions"
+          }
+        },
+        "required": [
+          "paymentSource",
+          "sku",
+          "consumer"
+        ],
+        "example": {
+          "paymentSource": {
+            "type": "card",
+            "number": "4024007179366348",
+            "expirationMonth": "11",
+            "expirationYear": "22",
+            "cvv": "100",
+            "3ds": false
+          },
+          "sku": {
+            "title": "Product name",
+            "siteId": "983759353",
+            "price": [
+              {
+                "offset": "0d",
+                "amount": 19.99,
+                "currency": "USD",
+                "repeat": false
+              }
+            ]
+          },
+          "consumer": {
+            "id": "4242522",
+            "email": "jonny.sonny@google.com",
+            "firstName": "John",
+            "lastName": "Doe",
+            "phone": "+1987353539",
+            "country": "USA",
+            "state": "Alabama",
+            "city": "Montgomery",
+            "zip": "36101",
+            "ip": "8.8.8.8",
+            "userAgent": "mozilla/5.0 (iphone; cpu iphone os 13_1_2 like mac os x) applewebkit/605.1.15 (khtml, like gecko) version/13.0.1 mobile/15e148 safari/604.1",
+            "deviceId": "1.1|hfp9sLiKhAoWyNSMpiQGh|mozilla/5.0 (windows nt 6.1) applewebkit/537.36 (khtml, like gecko) chrome/92.0.4515.131 safari/537.36|24#1344#840#799|internal-pdf-viewer#mhjfbmdgcfjbbpaeojofohoefgiehjai#internal-nacl-plugin|Win32|1g0u1g01u0u10r1u0x10g1y0g1d0g10g1010u101g0g1u01r0x10x101g01a010u101g01010u101r01z01ij01a0u1u01rd01r0r101ir01ii01aj01ux01ui01iy01y01ui0g1y01r01d0|MS|-1397920487|c39b35be"
+          },
+          "url": {
+            "ipnUrl": "https://google.com/centrobill/webhook/245252525252525",
+            "redirectUrl": "https://google.com/centrobill/redirect/245252525252525"
+          },
+          "metadata": {
+            "foo": "bar"
+          },
+          "emailOptions": {
+            "send": true
+          }
+        }
+      },
+      "code": {
+        "title": "Payment code",
+        "enum": [
+          "0",
+          "5000",
+          "5001",
+          "5003",
+          "5004",
+          "5005",
+          "5006",
+          "5007",
+          "5010",
+          "5012",
+          "5013",
+          "5014",
+          "5015",
+          "5016",
+          "5019",
+          "5030",
+          "5041",
+          "5043",
+          "5046",
+          "5051",
+          "5054",
+          "5055",
+          "5057",
+          "5058",
+          "5059",
+          "5061",
+          "5062",
+          "5063",
+          "5065",
+          "5070",
+          "5075",
+          "5078",
+          "5080",
+          "5082",
+          "5085",
+          "5086",
+          "5091",
+          "5093",
+          "5094",
+          "5096",
+          "5099",
+          "5220",
+          "5221",
+          "5222",
+          "5223",
+          "5224",
+          "5225"
+        ],
+        "description": "| code | description\n|---|---|\n| 0 | success |\n| 5000 | General bank decline |\n| 5001 | Refer to Issuer |\n| 5003 | Invalid merchant |\n| 5004 | Pick up card(no fraud) |\n| 5005 | Do not honor |\n| 5006 | Payment could not be authorised |\n| 5007 | Pick up card, special condition (fraud account) |\n| 5010 | Partial approval |\n| 5012 | Invalid transaction |\n| 5013 | Invalid Amount |\n| 5014 | Invalid Card Number |\n| 5015 | No such issuer |\n| 5016 | Invalid Cardholder Name |\n| 5019 | Re enter |\n| 5030 | Format error |\n| 5041 | Lost card, Pick up (fraud account) |\n| 5043 | Stolen card, pick up (fraud account) |\n| 5046 | Closed account |\n| 5051 | Insufficient Funds |\n| 5054 | Expired Card |\n| 5055 | Invalid PIN |\n| 5057 | Transaction not permitted - Card |\n| 5058 | Transaction not permitted - Terminal |\n| 5059 | Suspected fraud |\n| 5061 | Exceeds withdrawal amount limit(s) / Withdrawal amount limit exceeded |\n| 5062 | Invalid service code, restricted |\n| 5063 | Security Violation |\n| 5065 | Activity Limit Exceeded |\n| 5070 | PIN data required |\n| 5075 | Allowable number of PIN tries exceeded |\n| 5078 | Invalid/nonexistent account specified (general) |\n| 5080 | Credit issuer unavailable |\n| 5082 | Negative online CAM, dCVV, iCVV, CVV, or CAVV results or Offline PIN authentication interrupted |\n| 5085 | No reason to decline |\n| 5086 | Cannot verify PIN |\n| 5091 | Issuer or switch is unavailable |\n| 5093 | Violation, cannot complete |\n| 5094 | Duplicate transaction |\n| 5096 | System error |\n| 5099 | Expired payment |\n| 5220 | Authentication Failed by Card Issuer |\n| 5221 | Authentication is Unavailable at the current time |\n| 5222 | Verification failed or cancelled |\n| 5223 | Rejected authentication by the issuer  |\n| 5224 | Card not enrolled |\n| 5225 | Attempts processing performed |"
+      },
+      "description": {
+        "title": "Processing details",
+        "type": "string",
+        "maxLength": 128,
+        "example": "APPROVED"
+      },
+      "id-3": {
+        "title": "Payment transaction id",
+        "type": "string",
+        "minLength": 5,
+        "maxLength": 36,
+        "example": "12345"
+      },
+      "method": {
+        "title": "Payment method",
+        "enum": [
+          "card",
+          "applepay",
+          "sepa",
+          "sofortbanking",
+          "ideal",
+          "eps",
+          "mybank",
+          "bancontact",
+          "giropay",
+          "przelewy24",
+          "onlinebanking",
+          "skrill",
+          "clickandbuy",
+          "paypal",
+          "pix",
+          "boleto",
+          "pps",
+          "gash",
+          "crypto",
+          "paygarden",
+          "alipay",
+          "wechat",
+          "unionpay",
+          "voucher",
+          "paysafecard",
+          "ukash",
+          "safeklick",
+          "sms"
+        ],
+        "example": "card"
+      },
+      "consumer-2": {
+        "title": "Consumer",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/id-2"
+          },
+          "externalId": {
+            "$ref": "#/components/schemas/external-id"
+          },
+          "email": {
+            "$ref": "#/components/schemas/email"
+          },
+          "firstName": {
+            "$ref": "#/components/schemas/first-name"
+          },
+          "lastName": {
+            "$ref": "#/components/schemas/last-name"
+          },
+          "phone": {
+            "$ref": "#/components/schemas/phone"
+          },
+          "country": {
+            "$ref": "#/components/schemas/country"
+          },
+          "state": {
+            "$ref": "#/components/schemas/state"
+          },
+          "city": {
+            "$ref": "#/components/schemas/city"
+          },
+          "zip": {
+            "$ref": "#/components/schemas/zip-code"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "subscription": {
+        "title": "Object to represent subscription",
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Subscription Id",
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 36
+          },
+          "status": {
+            "enum": [
+              "active",
+              "canceled"
+            ],
+            "title": "Status of subscription",
+            "example": "active",
+            "nullable": true
+          },
+          "renewalDate": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expected date of renewal",
+            "example": "2020-04-17 13:43:02",
+            "nullable": true
+          },
+          "cancelDate": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expected date of cancel",
+            "example": "2020-11-17 13:43:02",
+            "nullable": true
+          },
+          "cycle": {
+            "type": "number",
+            "title": "A sequential number of recurring payments in a subscription",
+            "description": "| value | description |\n|---|---|\n| 0 | subscription has an initial payment |\n| n | subscription has n recurrent payments |",
+            "example": 0,
+            "nullable": true
+          }
+        }
+      },
+      "payment-2": {
+        "title": "Object to represent payment result",
+        "type": "object",
+        "properties": {
+          "payment": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "$ref": "#/components/schemas/code"
+              },
+              "description": {
+                "$ref": "#/components/schemas/description"
+              },
+              "action": {
+                "enum": [
+                  "redirect",
+                  "charge"
+                ],
+                "example": "charge",
+                "description": "|  action name | description |\n|---|---|\n| charge | Card will be charged immediately.  |\n| redirect | Consumer should be redirected to url for second step |",
+                "title": "The default action that should be undertaken"
+              },
+              "url": {
+                "type": "string",
+                "format": "url",
+                "example": "https://google.com/oijhflsfs9",
+                "description": "URL"
+              },
+              "mode": {
+                "enum": [
+                  "sale",
+                  "auth"
+                ],
+                "title": "Payment mode",
+                "example": "sale"
+              },
+              "status": {
+                "enum": [
+                  "success",
+                  "fail",
+                  "pending"
+                ],
+                "title": "Payment status",
+                "example": "success"
+              },
+              "amount": {
+                "$ref": "#/components/schemas/amount"
+              },
+              "currency": {
+                "$ref": "#/components/schemas/currency"
+              },
+              "orderId": {
+                "type": "string",
+                "minLength": 5,
+                "maxLength": 36,
+                "example": "235324530"
+              },
+              "transactionId": {
+                "$ref": "#/components/schemas/id-3"
+              },
+              "descriptor": {
+                "type": "string",
+                "example": "centrohelp.com"
+              },
+              "source": {
+                "type": "object",
+                "properties": {
+                  "method": {
+                    "$ref": "#/components/schemas/method"
+                  },
+                  "number": {
+                    "type": "string",
+                    "title": "Card/account number",
+                    "example": "402400****6348"
+                  },
+                  "brand": {
+                    "type": "string",
+                    "title": "Brand of account (if available)",
+                    "example": "visa"
+                  },
+                  "paymentAccountId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "d86bdcbb-c369-46d9-a9d0-9c5010e3bfdb"
+                  }
+                }
+              }
+            }
+          },
+          "consumer": {
+            "$ref": "#/components/schemas/consumer-2"
+          },
+          "subscription": {
+            "$ref": "#/components/schemas/subscription"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/metadata"
+          }
+        }
+      },
+      "payment-page": {
+        "title": "Payload to generate link of payment page",
+        "type": "object",
+        "properties": {
+          "sku": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "title": "SKU object with site id",
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "$ref": "#/components/schemas/title"
+                    },
+                    "siteId": {
+                      "$ref": "#/components/schemas/id"
+                    },
+                    "domainName": {
+                      "$ref": "#/components/schemas/domain-name"
+                    },
+                    "price": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/price"
+                      }
+                    },
+                    "url": {
+                      "type": "object",
+                      "properties": {
+                        "ipnUrl": {
+                          "$ref": "#/components/schemas/ipn"
+                        },
+                        "redirectUrl": {
+                          "$ref": "#/components/schemas/redirect"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "siteId",
+                    "price"
+                  ]
+                },
+                {
+                  "title": "SKU object with SKU name",
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "$ref": "#/components/schemas/title"
+                    },
+                    "name": {
+                      "$ref": "#/components/schemas/name"
+                    },
+                    "domainName": {
+                      "$ref": "#/components/schemas/domain-name"
+                    },
+                    "url": {
+                      "type": "object",
+                      "properties": {
+                        "ipnUrl": {
+                          "$ref": "#/components/schemas/ipn"
+                        },
+                        "redirectUrl": {
+                          "$ref": "#/components/schemas/redirect"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                {
+                  "title": "SKU object with SKU name and custom prices",
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "$ref": "#/components/schemas/title"
+                    },
+                    "name": {
+                      "$ref": "#/components/schemas/name"
+                    },
+                    "domainName": {
+                      "$ref": "#/components/schemas/domain-name"
+                    },
+                    "price": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/price"
+                      }
+                    },
+                    "url": {
+                      "type": "object",
+                      "properties": {
+                        "ipnUrl": {
+                          "$ref": "#/components/schemas/ipn"
+                        },
+                        "redirectUrl": {
+                          "$ref": "#/components/schemas/redirect"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "consumer": {
+            "title": "Consumer",
+            "type": "object",
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/id-2",
+                "description": "Required in case if consumer.externalId or consumer.email are empty"
+              },
+              "externalId": {
+                "$ref": "#/components/schemas/external-id",
+                "description": "Required in case if consumer.id is empty"
+              },
+              "email": {
+                "$ref": "#/components/schemas/email",
+                "description": "Required in case if consumer.id is empty"
+              },
+              "firstName": {
+                "$ref": "#/components/schemas/first-name",
+                "description": "Required in case if paymentSource.type is not one of consumer, paymentAccountIdWithCvv, token"
+              },
+              "lastName": {
+                "$ref": "#/components/schemas/last-name",
+                "description": "Required in case if paymentSource.type is not one of consumer, paymentAccountIdWithCvv, token"
+              },
+              "phone": {
+                "$ref": "#/components/schemas/phone"
+              },
+              "country": {
+                "$ref": "#/components/schemas/country"
+              },
+              "state": {
+                "$ref": "#/components/schemas/state"
+              },
+              "city": {
+                "$ref": "#/components/schemas/city"
+              },
+              "address": {
+                "$ref": "#/components/schemas/address"
+              },
+              "zip": {
+                "$ref": "#/components/schemas/zip-code"
+              },
+              "ip": {
+                "$ref": "#/components/schemas/ip-address",
+                "description": "Required in case if payment.selected or payment.method are not empty"
+              },
+              "userAgent": {
+                "$ref": "#/components/schemas/browser-user-agent"
+              },
+              "deviceId": {
+                "$ref": "#/components/schemas/device-id"
+              },
+              "browserAcceptHeader": {
+                "$ref": "#/components/schemas/browser-accept-header"
+              },
+              "browserJavaEnabled": {
+                "$ref": "#/components/schemas/browser-java-enabled"
+              },
+              "browserLanguage": {
+                "$ref": "#/components/schemas/browser-language"
+              },
+              "browserColorDepth": {
+                "$ref": "#/components/schemas/browser-color-depth"
+              },
+              "browserScreenHeight": {
+                "$ref": "#/components/schemas/browser-screen-height"
+              },
+              "browserScreenWidth": {
+                "$ref": "#/components/schemas/browser-screen-width"
+              },
+              "browserTimezone": {
+                "$ref": "#/components/schemas/browser-timezone"
+              }
+            }
+          },
+          "template": {
+            "title": "Template",
+            "type": "object",
+            "properties": {
+              "language": {
+                "type": "string",
+                "format": "ISO2",
+                "title": "Payment page language",
+                "description": "Language of payment page. If empty, omitted or unsupported - Centrobill will determine it automatically based on the browser settings and the geographical location of the client",
+                "example": "DE"
+              },
+              "layout": {
+                "type": "string",
+                "title": "Layout of payment page",
+                "description": "Layout (theme) for payment page. If empty, omitted or unsupported - Centrobill will use default theme"
+              },
+              "templateParameters": {
+                "type": "object",
+                "title": "Custom paramets of payment page",
+                "description": "Key → value list of layout parameters",
+                "example": {
+                  "foo": "bar"
+                }
+              }
+            }
+          },
+          "payment": {
+            "title": "Payment",
+            "type": "object",
+            "properties": {
+              "method": {
+                "$ref": "#/components/schemas/method"
+              },
+              "selected": {
+                "$ref": "#/components/schemas/method"
+              },
+              "secure": {
+                "type": "boolean",
+                "title": "Secure payment",
+                "description": "If true, Centrobill will attempt additional payment verification (such as 3DSecure). Centrobill will determine it automatically. True by default.",
+                "example": true
+              },
+              "test": {
+                "type": "boolean",
+                "title": "Indicates if the payment must will be processed in test mode ",
+                "example": false
+              },
+              "emulateCode": {
+                "$ref": "#/components/schemas/emulate-code"
+              },
+              "mid": {
+                "type": "string",
+                "minLength": 5,
+                "maxLength": 36,
+                "title": "Process the payment via specified merchant account."
+              }
+            }
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/metadata"
+          },
+          "ttl": {
+            "type": "integer",
+            "title": "Lifetime in seconds of payment page. By default 600",
+            "example": 300
+          },
+          "emailOptions": {
+            "$ref": "#/components/schemas/emailOptions"
+          }
+        },
+        "required": [
+          "sku"
+        ],
+        "example": {
+          "sku": [
+            {
+              "name": "TEST_EN_00",
+              "siteId": "1811",
+              "price": [
+                {
+                  "offset": "0d",
+                  "amount": 29.37,
+                  "currency": "USD",
+                  "repeat": false
+                },
+                {
+                  "offset": "60d",
+                  "amount": 50,
+                  "currency": "USD",
+                  "repeat": false
+                },
+                {
+                  "offset": "30d",
+                  "amount": 30,
+                  "currency": "USD",
+                  "repeat": true
+                }
+              ],
+              "currency": "USD",
+              "title": "30 day recurring + First 30 Days For Free",
+              "url": {
+                "redirectUrl": "https://google.com/payment/centrobill/success",
+                "ipnUrl": "https://google.com/callback"
+              }
+            }
+          ],
+          "consumer": {
+            "id": "59024134",
+            "externalId": "some-12958305390",
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "someuser2020130110@google.com"
+          },
+          "payment": {
+            "method": [
+              "card",
+              "sepa"
+            ],
+            "selected": "card",
+            "secure": true,
+            "test": false,
+            "mid": "s938503530f"
+          },
+          "metadata": {
+            "trackingId": "98530968732-93625235"
+          },
+          "emailOptions": {
+            "send": true
+          },
+          "ttl": 1200
+        }
+      },
+      "payment-page-2": {
+        "title": "Object to represent payment page URL",
+        "type": "object",
+        "properties": {
+          "url": {
+            "title": "Redirect URL",
+            "type": "string",
+            "description": "Url of Centrobill payment page",
+            "example": "https://pay.centrobill.com/unique-hash"
+          }
+        }
+      },
+      "reason": {
+        "title": "Reason of operation",
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 64,
+        "example": "Retention offer"
+      },
+      "credit": {
+        "title": "Payload to make credit",
+        "type": "object",
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/amount"
+          },
+          "reason": {
+            "$ref": "#/components/schemas/reason"
+          }
+        },
+        "required": [
+          "amount",
+          "reason"
+        ]
+      },
+      "credit-code": {
+        "title": "Credit code",
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          5
+        ],
+        "description": "| code | description |\n|---|---|\n| 0 | success |\n| 1 | bank decline |\n| 2 | anti-fraud system decline |\n| 3 | decline due limits |\n| 5 | payment expired",
+        "example": 0
+      },
+      "processing-details": {
+        "title": "Processing details",
+        "type": "string",
+        "maxLength": 128,
+        "example": "APPROVED"
+      },
+      "descriptor": {
+        "title": "Payment descriptor",
+        "type": "string",
+        "example": "example.com"
+      },
+      "source": {
+        "title": "Payment source",
+        "type": "object",
+        "properties": {
+          "method": {
+            "$ref": "#/components/schemas/method"
+          },
+          "number": {
+            "type": "string",
+            "title": "Masked card number",
+            "example": "402400****6348"
+          },
+          "brand": {
+            "type": "string",
+            "title": "Card brand",
+            "example": "visa"
+          }
+        }
+      },
+      "credit-2": {
+        "title": "Object to represent credit",
+        "type": "object",
+        "properties": {
+          "payment": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "$ref": "#/components/schemas/credit-code"
+              },
+              "description": {
+                "$ref": "#/components/schemas/processing-details"
+              },
+              "mode": {
+                "enum": [
+                  "credit"
+                ],
+                "title": "Payment mode",
+                "example": "credit"
+              },
+              "status": {
+                "enum": [
+                  "success",
+                  "fail"
+                ],
+                "title": "Payment status",
+                "example": "success"
+              },
+              "transactionId": {
+                "$ref": "#/components/schemas/id-3"
+              },
+              "descriptor": {
+                "$ref": "#/components/schemas/descriptor"
+              },
+              "source": {
+                "$ref": "#/components/schemas/source"
+              }
+            }
+          }
+        }
+      },
+      "payout": {
+        "title": "Payload to make payout",
+        "type": "object",
+        "properties": {
+          "consumerId": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 36
+          },
+          "paymentAccountId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "d86bdcbb-c369-46d9-a9d0-9c5010e3bfdb"
+          },
+          "parameters": {
+            "type": "object",
+            "description": "List of additional payout parameters",
+            "example": {
+              "accountId": "DE1743951300252"
+            }
+          },
+          "amount": {
+            "$ref": "#/components/schemas/amount"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/currency"
+          },
+          "url": {
+            "type": "object",
+            "properties": {
+              "ipnUrl": {
+                "$ref": "#/components/schemas/ipn"
+              }
+            }
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/metadata"
+          }
+        },
+        "required": [
+          "consumerId",
+          "amount",
+          "currency"
+        ],
+        "example": {
+          "consumerId": "410980353089024",
+          "paymentAccountId": "d86bdcbb-c369-46d9-a9d0-9c5010e3bfdb",
+          "amount": 9.99,
+          "currency": "USD",
+          "url": {
+            "ipnUrl": "https://google.com/centrobill/webhook/245252525252525"
+          },
+          "metadata": {
+            "foo": "bar"
+          }
+        }
+      },
+      "order-id": {
+        "title": "Centrobill's order ID",
+        "type": "string",
+        "minLength": 5,
+        "maxLength": 36,
+        "example": 235324530
+      },
+      "payout-2": {
+        "title": "Object to represet payout result",
+        "type": "object",
+        "properties": {
+          "payment": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "$ref": "#/components/schemas/code"
+              },
+              "description": {
+                "$ref": "#/components/schemas/description"
+              },
+              "action": {
+                "enum": [
+                  "charge"
+                ],
+                "example": "charge"
+              },
+              "mode": {
+                "enum": [
+                  "payout"
+                ],
+                "title": "Payment mode",
+                "example": "payout"
+              },
+              "status": {
+                "enum": [
+                  "success",
+                  "fail",
+                  "pending"
+                ],
+                "title": "Payment status",
+                "example": "success"
+              },
+              "amount": {
+                "$ref": "#/components/schemas/amount"
+              },
+              "currency": {
+                "$ref": "#/components/schemas/currency"
+              },
+              "orderId": {
+                "$ref": "#/components/schemas/order-id"
+              },
+              "transactionId": {
+                "$ref": "#/components/schemas/id-3"
+              },
+              "source": {
+                "type": "object",
+                "properties": {
+                  "method": {
+                    "enum": [
+                      "card"
+                    ],
+                    "title": "Payment method",
+                    "example": "card"
+                  },
+                  "number": {
+                    "type": "string",
+                    "title": "Masked card number",
+                    "example": "402400****6348"
+                  },
+                  "brand": {
+                    "type": "string",
+                    "title": "Card brand",
+                    "example": "visa"
+                  }
+                }
+              }
+            }
+          },
+          "consumer": {
+            "$ref": "#/components/schemas/consumer-2"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/metadata"
+          }
+        }
+      },
+      "id-4": {
+        "title": "Subscription ID",
+        "type": "string",
+        "minLength": 5,
+        "maxLength": 36
+      },
+      "subscription-2": {
+        "title": "Object to represent subscription",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/id-4"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "canceled"
+            ],
+            "title": "Status of subscription",
+            "example": "active"
+          },
+          "type": {
+            "enum": [
+              "trial",
+              "free-trial",
+              "regular"
+            ],
+            "title": "Subscription type"
+          },
+          "cycle": {
+            "type": "number",
+            "title": "A sequential number of recurring payments in a subscription",
+            "description": "| value | description |\n|---|---|\n| 0 | subscription has an initial payment |\n| n | subscription has n recurrent payments |",
+            "example": 0
+          },
+          "skuName": {
+            "type": "string",
+            "title": "Centrobill SKU name",
+            "example": "TEST_EN"
+          },
+          "siteId": {
+            "$ref": "#/components/schemas/id"
+          },
+          "renewalDate": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expected date of renewal",
+            "example": "2020-04-17 13:43:02"
+          },
+          "cancelDate": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expected date of cancel",
+            "example": "2020-11-17 13:43:02",
+            "nullable": true
+          },
+          "consumerId": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 36
+          }
+        }
+      },
+      "error-not-found": {
+        "title": "Object to represent error",
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message of error",
+            "default": "Not Found"
+          }
+        }
+      },
+      "subscription-3": {
+        "title": "Payload of subscription",
+        "type": "object",
+        "properties": {
+          "price": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/price"
+            }
+          }
+        }
+      },
+      "subscription-cancel": {
+        "title": "Payload to cancel subscription",
+        "type": "object",
+        "properties": {
+          "cancelDate": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Date of cancel",
+            "example": "2020-11-17 13:43:02",
+            "nullable": true,
+            "description": "In case if cancelDate is not passed or null, subscription will canceled immediately"
+          }
+        }
+      },
+      "name-2": {
+        "title": "Site name",
+        "type": "string",
+        "description": "URL without protocol prefix",
+        "example": "example.com"
+      },
+      "external-id-2": {
+        "title": "Merchant site ID",
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 36,
+        "example": "14253ms92m0as"
+      },
+      "site": {
+        "title": "Payload of site",
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/name-2"
+          },
+          "externalId": {
+            "$ref": "#/components/schemas/external-id-2"
+          },
+          "ipnUrl": {
+            "$ref": "#/components/schemas/ipn"
+          },
+          "redirectUrl": {
+            "$ref": "#/components/schemas/redirect"
+          }
+        }
+      },
+      "site-2": {
+        "title": "Object to represent site",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/id"
+          },
+          "name": {
+            "$ref": "#/components/schemas/name-2"
+          },
+          "externalId": {
+            "$ref": "#/components/schemas/external-id-2"
+          },
+          "ipnUrl": {
+            "$ref": "#/components/schemas/ipn"
+          },
+          "redirectUrl": {
+            "$ref": "#/components/schemas/redirect"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Date of site create",
+            "example": "2020-04-17 13:43:02"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Date of site last update",
+            "example": "2020-11-17 13:43:02"
+          }
+        }
+      },
+      "description-2": {
+        "title": "Product (SKU) description",
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 128,
+        "description": "Description will be displayed on payment page",
+        "example": "Annual subscription"
+      },
+      "external-id-3": {
+        "title": "Merchant SKU ID",
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 36,
+        "example": "7f9s7f9sfs9"
+      },
+      "type": {
+        "title": "Type of product (SKU)",
+        "enum": [
+          "one-time",
+          "subscription"
+        ],
+        "description": "| type | description |\n|---|---|\n| one-time | single payment |\n| subscription | recurrent payments |"
+      },
+      "sku": {
+        "title": "Payload of SKU",
+        "type": "object",
+        "properties": {
+          "title": {
+            "$ref": "#/components/schemas/description-2"
+          },
+          "externalId": {
+            "$ref": "#/components/schemas/external-id-3"
+          },
+          "type": {
+            "$ref": "#/components/schemas/type"
+          },
+          "price": {
+            "title": "Price",
+            "description": "Use \"Amount of product\" definition for \"one-time\" type, \"Price object\" for \"subscription\" type",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/amount",
+                "title": "Amount of product"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/price"
+                }
+              }
+            ]
+          },
+          "currency": {
+            "$ref": "#/components/schemas/currency",
+            "description": "Required in case for \"one-time\" type"
+          }
+        },
+        "required": [
+          "title",
+          "type",
+          "price"
+        ]
+      },
+      "username": {
+        "title": "Consumer username",
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 255
+      },
+      "group-id": {
+        "title": "Consumer group ID",
+        "enum": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "description": "| id | description\n|---|---|\n| 1 | whitelist |\n| 2 | blacklist |\n| 3 | junior |\n| 4 | senior |\n| 5 | expert |"
+      },
+      "consumer-3": {
+        "title": "Payload of consumer",
+        "type": "object",
+        "properties": {
+          "externalId": {
+            "$ref": "#/components/schemas/external-id"
+          },
+          "username": {
+            "$ref": "#/components/schemas/username"
+          },
+          "email": {
+            "$ref": "#/components/schemas/email"
+          },
+          "firstName": {
+            "$ref": "#/components/schemas/first-name"
+          },
+          "lastName": {
+            "$ref": "#/components/schemas/last-name"
+          },
+          "country": {
+            "$ref": "#/components/schemas/country"
+          },
+          "groupId": {
+            "$ref": "#/components/schemas/group-id"
+          }
+        },
+        "required": [
+          "externalId"
+        ],
+        "example": null
+      },
+      "consumer-4": {
+        "title": "Consumer",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/id-2"
+          },
+          "externalId": {
+            "$ref": "#/components/schemas/external-id"
+          },
+          "username": {
+            "$ref": "#/components/schemas/username"
+          },
+          "email": {
+            "$ref": "#/components/schemas/email"
+          },
+          "firstName": {
+            "$ref": "#/components/schemas/first-name"
+          },
+          "lastName": {
+            "$ref": "#/components/schemas/last-name"
+          },
+          "country": {
+            "$ref": "#/components/schemas/country"
+          },
+          "groupId": {
+            "$ref": "#/components/schemas/group-id"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "ips": {
+        "title": "Object to represent IP list",
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "example": [
+          "52.58.234.180",
+          "18.185.38.173",
+          "18.185.208.231",
+          "18.185.208.83"
+        ]
+      },
+      "test-payment-data": {
+        "title": "Object to represent test payment data",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Unique test payment id",
+            "example": 1234
+          },
+          "type": {
+            "type": "string",
+            "title": "Type of the test payment data",
+            "example": "visa"
+          },
+          "emulate3ds": {
+            "type": "boolean",
+            "title": "True if test payment data needs to emulate 3Ds process"
+          },
+          "number": {
+            "type": "string",
+            "title": "Test payment data",
+            "example": "4024007179366348"
+          },
+          "balance": {
+            "type": "integer",
+            "title": "Balance of the test payment data",
+            "example": 44
+          },
+          "blocked": {
+            "type": "boolean"
+          },
+          "allowedIps": {
+            "type": "array"
+          },
+          "createdAt": {
+            "type": "integer",
+            "title": "Date when test payment details were created",
+            "example": "2022-01-27 10:11:39"
+          },
+          "updatedAt": {
+            "type": "integer",
+            "title": "Date when test payment details were updated",
+            "example": "2022-01-27 10:11:39"
+          }
+        }
+      },
+      "test-payment-data-array": {
+        "title": "Object to represent test payment data array",
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "example": {
+          "id": 1234,
+          "type": "visa",
+          "emulate3ds": false,
+          "number": "4024007179366348",
+          "balance": 44,
+          "blocked": false,
+          "allowedIps": [],
+          "createdAt": "2022-01-27 10:11:39",
+          "updatedAt": "2022-01-27 10:11:39"
+        }
+      },
+      "update-balance-test-payment-data": {
+        "title": "Update balance payload",
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "integer",
+            "description": "Desired balance of the test payment data",
+            "minLength": 1,
+            "maxLength": 6
+          }
+        }
+      },
+      "create-test-data": {
+        "title": "Create test payment details",
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type of the test payment data",
+            "minLength": 5,
+            "maxLength": 36
+          },
+          "emulate3ds": {
+            "type": "boolean",
+            "description": "True if needs to emulate also 3Ds for this test payment data"
+          },
+          "balance": {
+            "type": "integer",
+            "description": "Balance of the test payment details",
+            "minLength": 1,
+            "maxLength": 4
+          },
+          "allowedIps": {
+            "type": "array",
+            "description": "Allowed IPs array"
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "example": {
+          "type": "visa",
+          "emulate3ds": "true",
+          "balance": "44"
+        }
+      },
+      "emulate-3Ds-test-payment-data": {
+        "title": "Update 3Ds emulation payload",
+        "type": "object",
+        "properties": {
+          "emulate3ds": {
+            "type": "boolean",
+            "description": "Should be True if emulate 3Ds and False when not emulate"
+          }
+        }
+      },
+      "verification-channels": {
+        "title": "Object to represent code verification channels",
+        "description": "List of available channels of verification",
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "example": [
+          "sms",
+          "telegram",
+          "whatsapp"
+        ]
+      },
+      "currency-rate": {
+        "title": "Object to represent currency rate",
+        "type": "object",
+        "properties": {
+          "iso3": {
+            "$ref": "#/components/schemas/currency"
+          },
+          "usdPerUnit": {
+            "type": "number",
+            "format": "double",
+            "title": "USD amount per 1 unit"
+          },
+          "unitPerUsd": {
+            "type": "number",
+            "format": "double",
+            "title": "Amount per 1 USD"
+          }
+        },
+        "example": {
+          "iso3": "EUR",
+          "usdPerUnit": 0.88,
+          "unitPerUsd": 1.13
+        }
+      }
+    },
+    "requestBodies": {
+      "payment-callback": {
+        "title": "Payment event callback",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/payment-2"
+            }
+          }
+        }
+      }
+    }
+  }
+}
